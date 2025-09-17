@@ -14,14 +14,14 @@ public class GamePanel extends JPanel implements Runnable {
     final static int originalTileSize = 16; // 16x16
     final static int scale = 3;
 
-    final static int tileSize = originalTileSize * scale; // 48x
+    public final static int tileSize = originalTileSize * scale; // 48x
     final static int maxScreenCol = 16;
     final static int maxScreenRow = 12;
 
-    final static int screenWidth = tileSize * maxScreenCol;
-    final static int screenHeight = tileSize * maxScreenRow;
+    public final static int screenWidth = tileSize * maxScreenCol;
+    public final static int screenHeight = tileSize * maxScreenRow;
 
-    final static int FPS = 60;
+    public final static int FPS = 60;
 
     // ACTIVE COORDINATES
     public Vector2 activeCoordinates = new Vector2(0, 0);
@@ -54,8 +54,8 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void run() {
 
-        double drawInterval = 1000000000/FPS;
-        double nextDrawTime = System.nanoTime() + drawInterval;
+        double drawInterval = (double) 1000000000 / FPS;
+        double nextFrameTime = System.nanoTime() + drawInterval;
 
         while (gameThread != null) {
 
@@ -68,16 +68,16 @@ public class GamePanel extends JPanel implements Runnable {
             repaint();
 
             try {
-                double remainingTime = nextDrawTime - System.nanoTime();
-                remainingTime = remainingTime / 1000000;
+                double remainingFrameTime = nextFrameTime - System.nanoTime();
+                remainingFrameTime = remainingFrameTime / 1000000;
 
-                if (remainingTime < 0) {
-                    remainingTime = 0;
+                if (remainingFrameTime < 0) {
+                    remainingFrameTime = 0;
                 }
 
-                Thread.sleep((long) remainingTime);
+                Thread.sleep((long) remainingFrameTime);
 
-                nextDrawTime += drawInterval;
+                nextFrameTime += drawInterval;
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -86,11 +86,16 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        for (BaseObject object : objectList) {
+            object.ApplyGravity();
+            object.UpdatePositionBasedOnVelocity();
+        }
+
         if (kHandler.ePressed) {
             activeCoordinates = mHandler.mousePosition;
             kHandler.ePressed = false;
 
-            objectList.add(new BaseObject());
+            objectList.add(new BaseObject(activeCoordinates));
         }
     }
 
@@ -100,11 +105,11 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.WHITE);
 
-        for (int i = 0; i < objectList.size(); i++) {
-            g2.fillRect();
+        for (BaseObject object : objectList) {
+            g2.fillRect((int) object.position.x, (int) object.position.y, tileSize, tileSize);
         }
 
-        g2.fillRect((int) Math.round(activeCoordinates.x), (int) Math.round(activeCoordinates.y), tileSize, tileSize);
+        //g2.fillRect((int) Math.round(activeCoordinates.x), (int) Math.round(activeCoordinates.y), tileSize, tileSize);
 
         g2.dispose();
     }
