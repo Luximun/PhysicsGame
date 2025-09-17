@@ -34,7 +34,8 @@ public class BaseObject {
     //**************//
 
     public void UpdatePositionBasedOnVelocity() {
-        position =
+        position.AddVector(velocity);
+        velocity.AddVector(acceleration);
     }
 
     public void SetPosition(Vector2 pos) {
