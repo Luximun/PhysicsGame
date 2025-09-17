@@ -88,6 +88,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         if (kHandler.ePressed) {
             activeCoordinates = mHandler.mousePosition;
+            kHandler.ePressed = false;
         }
     }
 
