@@ -17,6 +17,12 @@ public class Vector2 {
         hypotenuse = calculate_hypotenuse();
     }
 
+    public Vector2(Vector2 vector) {
+        x = vector.x;
+        y = vector.y;
+        hypotenuse = calculate_hypotenuse();
+    }
+
     public Vector2(double size) {x = size; y = size; hypotenuse = calculate_hypotenuse();}
 
     public Vector2() {x=0; y=0; hypotenuse=0;}
