@@ -89,6 +89,8 @@ public class GamePanel extends JPanel implements Runnable {
         if (kHandler.ePressed) {
             activeCoordinates = mHandler.mousePosition;
             kHandler.ePressed = false;
+
+            objectList.add(new BaseObject());
         }
     }
 
@@ -97,6 +99,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.WHITE);
+
+        for (int i = 0; i < objectList.size(); i++) {
+            g2.fillRect();
+        }
+
         g2.fillRect((int) Math.round(activeCoordinates.x), (int) Math.round(activeCoordinates.y), tileSize, tileSize);
 
         g2.dispose();

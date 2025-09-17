@@ -10,6 +10,22 @@ public class Vector2 {
     public Vector2(double inst_x, double inst_y) {
         x = inst_x;
         y = inst_y;
-        hypotenuse = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        hypotenuse = calculate_hypotenuse();
+    }
+
+    // fundamental ah shit
+    public double calculate_hypotenuse() {return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));}
+
+    // methods
+    public void AddVectors(Vector2 vector) {
+        x += vector.x;
+        y += vector.y;
+        hypotenuse = calculate_hypotenuse();
+    }
+
+    public void SubtractVectors(Vector2 vector) {
+        x -= vector.x;
+        y -= vector.y;
+        hypotenuse = calculate_hypotenuse();
     }
 }
