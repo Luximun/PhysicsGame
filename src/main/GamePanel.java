@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Vector2 activeCoordinates = new Vector2(0, 0);
 
     // OBJECTS
-    public ArrayList<BaseObject> objectList = new ArrayList<BaseObject>();
+    public static List list = new List();
 
     // HANDLERS AND THREADING
     KeyHandler kHandler = new KeyHandler();
