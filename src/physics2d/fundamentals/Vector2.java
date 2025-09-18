@@ -39,6 +39,16 @@ public class Vector2 {
         return (this.x*vec.x + this.y*vec.y);
     }
 
+    public void normalize()
+    {
+        float norm;
+
+        norm = (float)
+                (1.0/Math.sqrt(this.x*this.x + this.y*this.y));
+        this.x *= norm;
+        this.y *= norm;
+    }
+
     // mathematical methods
     /// MULTIPLICATION
     public Vector2 multiplyBy(float multiplier) {

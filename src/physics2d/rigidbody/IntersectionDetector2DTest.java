@@ -74,4 +74,29 @@ public class IntersectionDetector2DTest {
 
         assertTrue( IntersectionDetector2D.lineAndCircle(line, circle) );
     }
+
+    @Test
+    public void lineAndAABBShouldReturnTrue() {
+        Line2D line = new Line2D(new Vector2(-1, -1), new Vector2(10, 10));
+        AABB aabb = new AABB(new Vector2(0, 0), new Vector2(5, 5));
+
+        assertTrue( IntersectionDetector2D.lineAndAABB(line, aabb) );
+    }
+
+    @Test
+    public void lineAndAABBAlongEdge() {
+        Line2D line = new Line2D(new Vector2(0, -2), new Vector2(9, 11));
+        AABB aabb = new AABB(new Vector2(0, 0), new Vector2(10, 10));
+
+        assertTrue( IntersectionDetector2D.lineAndAABB(line, aabb) );
+    }
+
+    @Test
+    public void lineAndAABBShouldReturnFalse() {
+        Line2D line = new Line2D(new Vector2(0, 10), new Vector2(10, 12));
+        AABB aabb = new AABB(new Vector2(0, 0), new Vector2(5, 5));
+
+        assertTrue( IntersectionDetector2D.lineAndAABB(line, aabb) );
+    }
+
 }

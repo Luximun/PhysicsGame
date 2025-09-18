@@ -82,4 +82,49 @@ public class IntersectionDetector2D {
         return pointInCircle(closestPoint, circle);
     }
 
+    public static boolean lineAndAABB(Line2D line, AABB box) {
+        if (pointInAABB(line.getStart(), box) || pointInAABB(line.getEnd(), box)) {
+            return true;
+        }
+
+        // Normalising and unit vectoring
+        Vector2 unitVector = new Vector2(line.getEnd()).subtract(line.getStart());
+        unitVector.normalize();
+        unitVector.x = (unitVector.x != 0) ? 1.0f/unitVector.x : 0f;
+        unitVector.y = (unitVector.y != 0) ? 1.0f/unitVector.y : 0f;
+
+        Vector2 min = box.getMin();
+        min = min.subtract(line.getStart()).multiplyBy(unitVector);
+        Vector2 max = box.getMax();
+        max = max.subtract(line.getStart()).multiplyBy(unitVector);
+
+        float tMin = Math.max(Math.min(min.x, max.x), Math.min(min.y, max.y));
+        float tMax = Math.min(Math.max(min.x, max.x), Math.max(min.y, max.y));
+        if (tMax < 0 || tMin > tMax) {
+            return false;
+        }
+
+        float t = (tMin < 0f) ? tMax : tMin;
+        return t > 0f && t*t < line.lengthSquared();
+    }
+
+    public static boolean lineAndBox2D(Line2D line, Box2D box) {
+        // determine box angle
+        float theta = -box.getRigidbody().getRotation();
+
+        // get positions
+        Vector2 center = box.getRigidbody().getPosition();
+        Vector2 localStart = new Vector2(line.getStart());
+        Vector2 localEnd = new Vector2(line.getEnd());
+        TITMath.rotate(localStart, theta, center);
+        TITMath.rotate(localEnd, theta, center);
+
+        // create new line and new box
+        Line2D localLine = new Line2D(localStart, localEnd);
+        AABB aabb = new AABB(box.getMin(), box.getMax());
+
+        // test thing
+        return lineAndAABB(localLine, aabb);
+    }
+
 }

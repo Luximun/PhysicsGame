@@ -19,6 +19,13 @@ public class Line2D {
     public Vector2 getFrom() {return from;}
     public Vector2 getTo()   {return to;}
 
+    public Vector2 getStart() {return from;}
+    public Vector2 getEnd() {return to;}
+
+    public float lengthSquared() {
+        return new Vector2(to).subtract(from).lengthSquared();
+    }
+
     //*********//
     // SETTERS //
     //*********//
