@@ -1,21 +1,29 @@
 package physics2d.primatives;
 
-import main.utils.Vector2;
+import physics2d.fundamentals.Vector2;
 import physics2d.rigidbody.Rigidbody2D;
 
 public class Box2D {
     private Vector2 size = new Vector2();
     private Vector2 halfSize = new Vector2();
-    private Rigidbody2D rigidbody = null;
+    private Rigidbody2D rigidbody = new Rigidbody2D();
 
     public Box2D() {
-        this.halfSize = size.DivideBy(2);
+        this.halfSize = size.divideBy(2);
     }
 
     public Box2D(Vector2 min, Vector2 max) {
         this.size = max.subtract(min);
-        this.halfSize = size.DivideBy(2);
+        this.halfSize = size.divideBy(2);
     }
+
+//    public Box2D(Vector2 center, Vector2 size, float rotation) {
+//        this.size = new Vector2(size);
+//        this.halfSize = size.divideBy(2);
+//
+//        this.rigidbody.setPosition(center);
+//        this.rigidbody.setRotation(rotation);
+//    }
 
     public Vector2 getMin() {
         return this.rigidbody.getPosition().subtract(this.halfSize);
@@ -41,5 +49,9 @@ public class Box2D {
             }
         }
         return vertices;
+    }
+
+    public Rigidbody2D getRigidbody() {
+        return this.rigidbody;
     }
 }

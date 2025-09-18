@@ -1,6 +1,6 @@
 package physics2d.rigidbody;
 
-import main.utils.Vector2;
+import physics2d.fundamentals.Vector2;
 
 public class Rigidbody2D {
     private Vector2 position = new Vector2();

@@ -1,6 +1,6 @@
 package main.objects;
 
-import main.utils.Vector2;
+import physics2d.fundamentals.Vector2;
 
 public class WeightObject extends BaseObject {
 

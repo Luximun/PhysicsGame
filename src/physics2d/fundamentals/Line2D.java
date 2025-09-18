@@ -1,6 +1,4 @@
-package physics2d;
-
-import main.utils.Vector2;
+package physics2d.fundamentals;
 
 public class Line2D {
     private Vector2 from;

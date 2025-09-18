@@ -1,11 +1,10 @@
 package main;
 
 import main.objects.BaseObject;
-import main.utils.Vector2;
+import physics2d.fundamentals.Vector2;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable {

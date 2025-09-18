@@ -2,7 +2,7 @@ package main.objects;
 
 import main.Environment;
 import main.GamePanel;
-import main.utils.Vector2;
+import physics2d.fundamentals.Vector2;
 
 public class BaseObject {
     public String name = "baseobject";
@@ -33,7 +33,7 @@ public class BaseObject {
     }
 
     public BaseObject(Vector2 pos) {
-        position = pos.subtract(size.DivideBy(2));
+        position = pos.subtract(size.divideBy(2));
     }
 
     //*********//
@@ -41,8 +41,8 @@ public class BaseObject {
     //*********//
 
     public void UpdatePositionBasedOnVelocity() {
-        position = position.add(velocity.DivideBy(GamePanel.FPS));
-        velocity = velocity.add(acceleration.DivideBy(GamePanel.FPS));
+        position = position.add(velocity.divideBy(GamePanel.FPS));
+        velocity = velocity.add(acceleration.divideBy(GamePanel.FPS));
     }
 
     public void ApplyGravity() {

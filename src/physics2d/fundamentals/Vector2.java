@@ -1,4 +1,4 @@
-package main.utils;
+package physics2d.fundamentals;
 
 public class Vector2 {
 
@@ -31,22 +31,28 @@ public class Vector2 {
     // METHODS //
     //*********//
 
-//    public float calculate_hypotenuse() {return Math.sqrt(Math.pow((double) x, 2) + Math.pow((double) y, 2));}
+    public float lengthSquared() {
+        return x*x + y*y;
+    }
+
+    public float dot(Vector2 vec) {
+        return (this.x*vec.x + this.y*vec.y);
+    }
 
     // mathematical methods
     /// MULTIPLICATION
-    public Vector2 MultiplyBy(float multiplier) {
+    public Vector2 multiplyBy(float multiplier) {
         return new Vector2(x * multiplier, y * multiplier);
     }
-    public Vector2 MultiplyBy(Vector2 vector) {
+    public Vector2 multiplyBy(Vector2 vector) {
         return new Vector2(x * vector.x, y * vector.y);
     }
 
     ///  DIVISION
-    public Vector2 DivideBy(float divisor) {
+    public Vector2 divideBy(float divisor) {
         return new Vector2(x / divisor, y / divisor);
     }
-    public Vector2 DivideBy(Vector2 vector) {
+    public Vector2 divideBy(Vector2 vector) {
         return new Vector2(x / vector.x, y / vector.y);
     }
 

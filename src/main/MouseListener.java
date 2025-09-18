@@ -1,10 +1,9 @@
 package main;
 
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import main.utils.Vector2;
+import physics2d.fundamentals.Vector2;
 
 public class MouseListener extends MouseAdapter {
 
