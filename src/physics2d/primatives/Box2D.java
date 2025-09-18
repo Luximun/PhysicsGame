@@ -1,5 +1,6 @@
 package physics2d.primatives;
 
+import main.utils.TITMath;
 import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.rigidbody.Rigidbody2D;
@@ -17,13 +18,13 @@ public class Box2D extends PhysicsObject {
         this.halfSize = size.divideBy(2);
     }
 
-//    public Box2D(Vector2 center, Vector2 size, float rotation) {
-//        this.size = new Vector2(size);
-//        this.halfSize = size.divideBy(2);
-//
-//        this.rigidbody.setPosition(center);
-//        this.rigidbody.setRotation(rotation);
-//    }
+    public Box2D(Vector2 center, Vector2 size, float rotation) {
+        this.size = new Vector2(size);
+        this.halfSize = size.divideBy(2);
+
+        this.rigidbody.setPosition(center);
+        this.rigidbody.setRotation(rotation);
+    }
 
     public Vector2 getMin() {
         return this.rigidbody.getPosition().subtract(this.halfSize);
@@ -37,15 +38,15 @@ public class Box2D extends PhysicsObject {
         Vector2 max = getMax();
 
         Vector2[] vertices = {
-                new Vector2(min.x, min.y), new Vector2(min.x, max.y),
-                new Vector2(max.x, min.y), new Vector2(max.x, max.y)
+                new Vector2(min.x, min.y), new Vector2(max.x, min.y),
+                new Vector2(max.x, max.y), new Vector2(min.x, max.y)
         };
 
         if (rigidbody.getRotation() != 0.0f) {
             for (Vector2 vert : vertices) {
-                // TODO: implement this
                 // rotates point (vec2) around center (vec2) by rotation (float - degrees)
-                //TITMath.rotate(vert, this.rigidbody.getPosition(), this.rigidbody.getRotation());
+                System.out.println(this.rigidbody.getRotation());
+                TITMath.rotate(vert, this.rigidbody.getRotation(), this.rigidbody.getPosition());
             }
         }
         return vertices;

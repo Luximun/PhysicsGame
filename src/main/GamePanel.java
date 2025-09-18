@@ -3,10 +3,12 @@ package main;
 import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.primatives.AABB;
+import physics2d.primatives.Box2D;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -95,9 +97,16 @@ public class GamePanel extends JPanel implements Runnable {
             activeCoordinates = new Vector2(mHandler.mousePosition);
             kHandler.ePressed = false;
 
-//            System.out.println("owiuefhiuwergerg");
+            float randomAngle = (float) Math.round(Math.random()*90);
+            System.out.println(randomAngle);
+
             objectList.add(
-                    new AABB(new Vector2(activeCoordinates), 40, 20)
+//                new AABB(new Vector2(activeCoordinates), (float) Math.random() * 100, (float) Math.random() * 100)
+                new Box2D(
+                        new Vector2(activeCoordinates),
+                        new Vector2((float) Math.random() * 100, (float) Math.random() * 100),
+                        90 //randomAngle
+                )
             );
         }
     }
@@ -109,10 +118,27 @@ public class GamePanel extends JPanel implements Runnable {
         g2.setColor(Color.WHITE);
 
         for (PhysicsObject object : objectList) {
-            g2.fillRect((int) object.getRigidbody().getPosition().x, (int) object.getRigidbody().getPosition().y, (int) object.getSize().x, (int) object.getSize().y);
-        }
+            if ((object instanceof AABB) || (object instanceof Box2D && object.getRigidbody().getRotation() == 0.0f)) {
+                g2.fillRect((int) object.getRigidbody().getPosition().x, (int) object.getRigidbody().getPosition().y, (int) object.getSize().x, (int) object.getSize().y);
+            } else if (object instanceof Box2D) {
+                Vector2[] vertices = ((Box2D) object).getVertices();
+                int numberOfVertices = vertices.length;
 
-        //g2.fillRect((int) Math.round(activeCoordinates.x), (int) Math.round(activeCoordinates.y), tileSize, tileSize);
+                int[] xPositions = new int[numberOfVertices];
+                int[] yPositions = new int[numberOfVertices];
+
+                int index = 0;
+
+                for (Vector2 vertex : vertices) {
+                    xPositions[index] = (int) vertex.x;
+                    yPositions[index] = (int) vertex.y;
+
+                    index++;
+                }
+
+                g2.fillPolygon(xPositions, yPositions, numberOfVertices);
+            }
+        }
 
         g2.dispose();
     }
