@@ -7,6 +7,10 @@ public class Circle {
 
     public Circle() {}
 
+    public Circle(float rad) {
+        radius = rad;
+    }
+
     public float getRadius() {return this.radius;}
     public Vector2 getCenter() {}
  }

@@ -15,7 +15,7 @@ public class BaseObject {
     public Vector2 velocity = new Vector2();
     public Vector2 acceleration = new Vector2();
 
-    public Vector2 size = new Vector2((double) GamePanel.tileSize);
+    public Vector2 size = new Vector2((float) GamePanel.tileSize);
 
     //**************//
     // CONSTRUCTORS //
@@ -47,7 +47,7 @@ public class BaseObject {
 
     public void ApplyGravity() {
         if (position.y + GamePanel.tileSize < GamePanel.screenHeight) {
-            acceleration = acceleration.add(new Vector2(0, Environment.GRAVITY / GamePanel.FPS));
+            acceleration = acceleration.add(new Vector2(0, (float) (Environment.GRAVITY / GamePanel.FPS)));
         } else {
             acceleration.y = 0;
             velocity.y = 0;

@@ -2,40 +2,40 @@ package main.utils;
 
 public class Vector2 {
 
-    public double x;
-    public double y;
+    public float x;
+    public float y;
 
-    public double hypotenuse;
+//    public float hypotenuse;
 
     //**************//
     // CONSTRUCTORS //
     //**************//
 
-    public Vector2(double inst_x, double inst_y) {
+    public Vector2(float inst_x, float inst_y) {
         x = inst_x;
         y = inst_y;
-        hypotenuse = calculate_hypotenuse();
+        /*hypotenuse = calculate_hypotenuse();*/
     }
 
     public Vector2(Vector2 vector) {
         x = vector.x;
         y = vector.y;
-        hypotenuse = calculate_hypotenuse();
+        /*hypotenuse = calculate_hypotenuse();*/
     }
 
-    public Vector2(double size) {x = size; y = size; hypotenuse = calculate_hypotenuse();}
+    public Vector2(float size) {x = size; y = size; /*hypotenuse = calculate_hypotenuse();*/}
 
-    public Vector2() {x=0; y=0; hypotenuse=0;}
+    public Vector2() {x=0f; y=0f; /*hypotenuse=0f;*/}
 
     //*********//
     // METHODS //
     //*********//
 
-    public double calculate_hypotenuse() {return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));}
+//    public float calculate_hypotenuse() {return Math.sqrt(Math.pow((double) x, 2) + Math.pow((double) y, 2));}
 
     // mathematical methods
     /// MULTIPLICATION
-    public Vector2 MultiplyBy(double multiplier) {
+    public Vector2 MultiplyBy(float multiplier) {
         return new Vector2(x * multiplier, y * multiplier);
     }
     public Vector2 MultiplyBy(Vector2 vector) {
@@ -43,7 +43,7 @@ public class Vector2 {
     }
 
     ///  DIVISION
-    public Vector2 DivideBy(double divisor) {
+    public Vector2 DivideBy(float divisor) {
         return new Vector2(x / divisor, y / divisor);
     }
     public Vector2 DivideBy(Vector2 vector) {

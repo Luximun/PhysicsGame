@@ -2,7 +2,7 @@ package main;
 
 public class Environment {
 
-    public static double GRAVITY = 9.81;
-    public static double AMBIENT_TEMPERATURE = 15;
+    public static float GRAVITY = 9.81f;
+    public static float AMBIENT_TEMPERATURE = 20.0f;
 
 }
