@@ -1,7 +1,8 @@
 package main;
 
-import main.objects.BaseObject;
+import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
+import physics2d.primatives.AABB;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Vector2 activeCoordinates = new Vector2(0, 0);
 
     // OBJECTS
-    public static List list = new List();
+    public static ArrayList<PhysicsObject> objectList = new ArrayList<PhysicsObject>();
 
     // HANDLERS AND THREADING
     KeyHandler kHandler = new KeyHandler();
@@ -85,16 +86,19 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        for (BaseObject object : objectList) {
-            object.ApplyGravity();
-            object.UpdatePositionBasedOnVelocity();
-        }
+//        for (PhysicsObject object : objectList) {
+//            object.ApplyGravity();
+//            object.UpdatePositionBasedOnVelocity();
+//        }
 
         if (kHandler.ePressed) {
-            activeCoordinates = mHandler.mousePosition;
+            activeCoordinates = new Vector2(mHandler.mousePosition);
             kHandler.ePressed = false;
 
-            objectList.add(new BaseObject(activeCoordinates));
+//            System.out.println("owiuefhiuwergerg");
+            objectList.add(
+                    new AABB(new Vector2(activeCoordinates), 40, 20)
+            );
         }
     }
 
@@ -104,8 +108,8 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.WHITE);
 
-        for (BaseObject object : objectList) {
-            g2.fillRect((int) object.position.x, (int) object.position.y, tileSize, tileSize);
+        for (PhysicsObject object : objectList) {
+            g2.fillRect((int) object.getRigidbody().getPosition().x, (int) object.getRigidbody().getPosition().y, (int) object.getSize().x, (int) object.getSize().y);
         }
 
         //g2.fillRect((int) Math.round(activeCoordinates.x), (int) Math.round(activeCoordinates.y), tileSize, tileSize);

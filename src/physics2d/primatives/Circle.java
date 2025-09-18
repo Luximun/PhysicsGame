@@ -1,11 +1,11 @@
 package physics2d.primatives;
 
+import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.rigidbody.Rigidbody2D;
 
-public class Circle {
+public class Circle extends PhysicsObject {
     private float radius = 1.0f;
-    private Rigidbody2D rigidbody = new Rigidbody2D();
 
     public Circle() {}
 
@@ -17,4 +17,9 @@ public class Circle {
     public Vector2 getCenter() {
         return rigidbody.getPosition();
     }
- }
+
+    @Override
+    public Vector2 getSize() {
+        return null;
+    }
+}

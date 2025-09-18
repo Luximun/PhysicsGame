@@ -1,12 +1,12 @@
 package physics2d.primatives;
 
+import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.rigidbody.Rigidbody2D;
 
-public class Box2D {
+public class Box2D extends PhysicsObject {
     private Vector2 size = new Vector2();
     private Vector2 halfSize = new Vector2();
-    private Rigidbody2D rigidbody = new Rigidbody2D();
 
     public Box2D() {
         this.halfSize = size.divideBy(2);
@@ -53,5 +53,10 @@ public class Box2D {
 
     public Rigidbody2D getRigidbody() {
         return this.rigidbody;
+    }
+
+    @Override
+    public Vector2 getSize() {
+        return this.size;
     }
 }

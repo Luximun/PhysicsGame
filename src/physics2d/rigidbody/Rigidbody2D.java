@@ -1,5 +1,6 @@
 package physics2d.rigidbody;
 
+import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 
 public class Rigidbody2D {
@@ -11,7 +12,7 @@ public class Rigidbody2D {
     }
 
     public void setPosition(Vector2 position) {
-        this.position = position;
+        this.position = new Vector2(position);
     }
 
     public float getRotation() {
