@@ -16,4 +16,8 @@ public class MouseListener extends MouseAdapter {
 
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        super.mouseClicked(e);
+    }
 }

@@ -1,5 +1,6 @@
 package main;
 
+import main.components.ScreenComponent;
 import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.primatives.AABB;
@@ -29,7 +30,8 @@ public class GamePanel extends JPanel implements Runnable {
     public Vector2 activeCoordinates = new Vector2(0, 0);
 
     // OBJECTS
-    public static ArrayList<PhysicsObject> objectList = new ArrayList<PhysicsObject>();
+    public static ArrayList<PhysicsObject> objectList = new ArrayList<>();
+//    public static ArrayList<ScreenComponent> screenComps = new ArrayList<>();
 
     // HANDLERS AND THREADING
     KeyHandler kHandler = new KeyHandler();
@@ -45,6 +47,10 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(kHandler);
         this.addMouseMotionListener(mHandler);
         this.setFocusable(true);
+
+//        JButton myButton = new JButton("My Button");
+//        myButton.setSize(100, 50);
+//        this.add(myButton);
 
     }
 
@@ -98,14 +104,13 @@ public class GamePanel extends JPanel implements Runnable {
             kHandler.ePressed = false;
 
             float randomAngle = (float) Math.round(Math.random()*90);
-            System.out.println(randomAngle);
 
             objectList.add(
 //                new AABB(new Vector2(activeCoordinates), (float) Math.random() * 100, (float) Math.random() * 100)
                 new Box2D(
                         new Vector2(activeCoordinates),
                         new Vector2((float) Math.random() * 100, (float) Math.random() * 100),
-                        90 //randomAngle
+                        randomAngle
                 )
             );
         }

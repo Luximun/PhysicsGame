@@ -52,10 +52,6 @@ public class Box2D extends PhysicsObject {
         return vertices;
     }
 
-    public Rigidbody2D getRigidbody() {
-        return this.rigidbody;
-    }
-
     @Override
     public Vector2 getSize() {
         return this.size;

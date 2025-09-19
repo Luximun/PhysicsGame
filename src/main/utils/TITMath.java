@@ -4,21 +4,34 @@ import physics2d.fundamentals.Vector2;
 
 public class TITMath {
 
+//    public static void rotate(Vector2 vec, float angleDeg, Vector2 origin) {
+//        float x = vec.x - origin.x;
+//        float y = vec.y - origin.y;
+//
+//        float cos = (float) Math.cos(Math.toRadians(angleDeg));
+//        float sin = (float) Math.cos(Math.toRadians(angleDeg));
+//
+//        float xPrime = (x * cos) - (y * sin);
+//        float yPrime = (x * sin) + (y * cos);
+//
+//        xPrime += origin.x;
+//        yPrime += origin.y;
+//
+//        vec.x = xPrime;
+//        vec.y = yPrime;
+//    }
+
     public static void rotate(Vector2 vec, float angleDeg, Vector2 origin) {
-        float x = vec.x - origin.x;
-        float y = vec.y - origin.y;
-
         float cos = (float) Math.cos(Math.toRadians(angleDeg));
-        float sin = (float) Math.cos(Math.toRadians(angleDeg));
+        float sin = (float) Math.sin(Math.toRadians(angleDeg));
 
-        float xPrime = (x * cos) - (y * sin);
-        float yPrime = (x * sin) + (y * cos);
+        System.out.println("In maths: " + cos + " " + sin);
 
-        xPrime += origin.x;
-        yPrime += origin.y;
+        float newX = (origin.x + (vec.x-origin.x)*cos - (vec.y-origin.y)*sin);
+        float newY = (origin.y + (vec.x-origin.x)*sin + (vec.y-origin.y)*cos);
 
-        vec.x = xPrime;
-        vec.y = yPrime;
+        vec.x = newX;
+        vec.y = newY;
     }
 
     public static boolean compare(float x, float y, float epsilon) {
