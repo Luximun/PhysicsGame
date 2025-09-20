@@ -25,8 +25,6 @@ public class TITMath {
         float cos = (float) Math.cos(Math.toRadians(angleDeg));
         float sin = (float) Math.sin(Math.toRadians(angleDeg));
 
-        System.out.println("In maths: " + cos + " " + sin);
-
         float newX = (origin.x + (vec.x-origin.x)*cos - (vec.y-origin.y)*sin);
         float newY = (origin.y + (vec.x-origin.x)*sin + (vec.y-origin.y)*cos);
 

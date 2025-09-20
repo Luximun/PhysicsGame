@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        JFrame window = new JFrame("2D Shit");
+        JFrame window = new JFrame("Physics Engine Practise by TillyTam");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
 

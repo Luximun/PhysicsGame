@@ -45,7 +45,6 @@ public class Box2D extends PhysicsObject {
         if (rigidbody.getRotation() != 0.0f) {
             for (Vector2 vert : vertices) {
                 // rotates point (vec2) around center (vec2) by rotation (float - degrees)
-                System.out.println(this.rigidbody.getRotation());
                 TITMath.rotate(vert, this.rigidbody.getRotation(), this.rigidbody.getPosition());
             }
         }

@@ -1,11 +1,13 @@
 package main;
 
+import main.components.Button;
 import main.components.ScreenComponent;
 import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.primatives.AABB;
 import physics2d.primatives.Box2D;
 
+import javax.script.ScriptEngine;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,14 +33,16 @@ public class GamePanel extends JPanel implements Runnable {
 
     // OBJECTS
     public static ArrayList<PhysicsObject> objectList = new ArrayList<>();
-//    public static ArrayList<ScreenComponent> screenComps = new ArrayList<>();
+    public static ArrayList<ScreenComponent> screenComps = new ArrayList<>();
+
+    public static PhysicsObject selectedObject = null;
 
     // HANDLERS AND THREADING
     KeyHandler kHandler = new KeyHandler();
     MouseListener mHandler = new MouseListener();
     Thread gameThread;
 
-    // CONSTRUCTOR
+    /// CONSTRUCTOR
     public GamePanel() {
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -48,46 +52,50 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseMotionListener(mHandler);
         this.setFocusable(true);
 
-//        JButton myButton = new JButton("My Button");
-//        myButton.setSize(100, 50);
-//        this.add(myButton);
-
     }
 
+    /// THREAD STARTER
     public void StartGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
+    /// MAIN RUN FUNCTION
     @Override
     public void run() {
 
         double drawInterval = (double) 1000000000 / FPS;
-        double nextFrameTime = System.nanoTime() + drawInterval;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        long timer = 0;
+        int drawCount = 0;
+
+        screenComps.add(new ScreenComponent(new Vector2(10, 10), new Vector2(70, 50), mHandler, this));
+        screenComps.getLast().setColor(Color.MAGENTA);
 
         while (gameThread != null) {
 
-            long currentTime = System.nanoTime();
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / drawInterval;
+            timer += (currentTime - lastTime);
+            lastTime = currentTime;
 
-            // UPDATE SHIT
-            update();
+            if (delta >= 1) {
+                // UPDATE SHIT
+                update();
 
-            // REDRAW SCREEN
-            repaint();
+                // REDRAW SCREEN
+                repaint();
 
-            try {
-                double remainingFrameTime = nextFrameTime - System.nanoTime();
-                remainingFrameTime = remainingFrameTime / 1000000;
+                delta--;
+                drawCount++;
+            }
 
-                if (remainingFrameTime < 0) {
-                    remainingFrameTime = 0;
-                }
-
-                Thread.sleep((long) remainingFrameTime);
-
-                nextFrameTime += drawInterval;
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            if (timer >= 1000000000) {
+                System.out.println("FPS: " + drawCount);
+                drawCount = 0;
+                timer = 0;
             }
         }
 
@@ -98,6 +106,19 @@ public class GamePanel extends JPanel implements Runnable {
 //            object.ApplyGravity();
 //            object.UpdatePositionBasedOnVelocity();
 //        }
+        if (mHandler.mouseClicked) {
+            for (ScreenComponent comp : screenComps) {
+                // if button
+                if (comp instanceof Button) {
+                    // if mouse is within
+                    if (comp.pointWithin(mHandler.mousePosition)) {
+                        ((Button) comp).ButtonClicked();
+                    }
+                }
+            }
+
+            mHandler.mouseClicked = false;
+        }
 
         if (kHandler.ePressed) {
             activeCoordinates = new Vector2(mHandler.mousePosition);
@@ -143,6 +164,12 @@ public class GamePanel extends JPanel implements Runnable {
 
                 g2.fillPolygon(xPositions, yPositions, numberOfVertices);
             }
+        }
+
+        for (ScreenComponent component : screenComps) {
+            g2.setColor(component.color);
+            Vector2 size = component.getSize();
+            g2.fillRect((int) component.min.x, (int) component.max.y, (int) size.x, (int) size.y);
         }
 
         g2.dispose();

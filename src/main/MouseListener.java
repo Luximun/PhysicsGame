@@ -7,7 +7,8 @@ import physics2d.fundamentals.Vector2;
 
 public class MouseListener extends MouseAdapter {
 
-    public Vector2 mousePosition = new Vector2(0, 0);;
+    public Vector2 mousePosition = new Vector2(0, 0);
+    public boolean mouseClicked = false;
 
 //    @Override
     public void mouseMoved(MouseEvent e) {
@@ -19,5 +20,7 @@ public class MouseListener extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
+
+        mouseClicked = true;
     }
 }
