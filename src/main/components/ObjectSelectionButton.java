@@ -4,6 +4,10 @@ import main.GamePanel;
 import main.MouseListener;
 import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
+import physics2d.primatives.AABB;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ObjectSelectionButton extends Button {
 
@@ -20,6 +24,7 @@ public class ObjectSelectionButton extends Button {
 
     @Override
     public void ButtonClicked() {
+        System.out.println("clicked " + this.associatedSelection.toString());
         GamePanel.selectedObject = this.associatedSelection;
     }
 }

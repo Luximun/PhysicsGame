@@ -9,6 +9,10 @@ public class Box2D extends PhysicsObject {
     private Vector2 size = new Vector2();
     private Vector2 halfSize = new Vector2();
 
+    public static Box2D createNewDefault(Vector2 center) {
+        return new Box2D(center, new Vector2(20, 20), (float) Math.random()*90);
+    }
+
     public Box2D() {
         this.halfSize = size.divideBy(2);
     }

@@ -1,17 +1,20 @@
 package main;
 
 import main.components.Button;
+import main.components.ObjectSelectionButton;
 import main.components.ScreenComponent;
+import main.utils.TITMath;
 import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.primatives.AABB;
 import physics2d.primatives.Box2D;
+import physics2d.primatives.Circle;
 
-import javax.script.ScriptEngine;
 import javax.swing.*;
 import java.awt.*;
+import java.io.Console;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -35,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static ArrayList<PhysicsObject> objectList = new ArrayList<>();
     public static ArrayList<ScreenComponent> screenComps = new ArrayList<>();
 
-    public static PhysicsObject selectedObject = null;
+    public static PhysicsObject selectedObject = new AABB();
 
     // HANDLERS AND THREADING
     KeyHandler kHandler = new KeyHandler();
@@ -50,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(kHandler);
         this.addMouseMotionListener(mHandler);
+        this.addMouseListener(mHandler);
         this.setFocusable(true);
 
     }
@@ -71,8 +75,14 @@ public class GamePanel extends JPanel implements Runnable {
         long timer = 0;
         int drawCount = 0;
 
-        screenComps.add(new ScreenComponent(new Vector2(10, 10), new Vector2(70, 50), mHandler, this));
-        screenComps.getLast().setColor(Color.MAGENTA);
+        screenComps.add(new ObjectSelectionButton(new Vector2(10, 10), new Vector2(70, 50), mHandler, this, "AABB", new AABB()));
+        screenComps.getLast().setColor(Color.DARK_GRAY);
+
+        screenComps.add(new ObjectSelectionButton(new Vector2(10, 55), new Vector2(70, 95), mHandler, this, "Box2D", new Box2D()));
+        screenComps.getLast().setColor(Color.CYAN);
+
+        screenComps.add(new ObjectSelectionButton(new Vector2(10, 100), new Vector2(70, 140), mHandler, this, "Circle", new Circle()));
+        screenComps.getLast().setColor(Color.GREEN);
 
         while (gameThread != null) {
 
@@ -102,38 +112,28 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-//        for (PhysicsObject object : objectList) {
-//            object.ApplyGravity();
-//            object.UpdatePositionBasedOnVelocity();
-//        }
-        if (mHandler.mouseClicked) {
-            for (ScreenComponent comp : screenComps) {
-                // if button
-                if (comp instanceof Button) {
-                    // if mouse is within
-                    if (comp.pointWithin(mHandler.mousePosition)) {
-                        ((Button) comp).ButtonClicked();
-                    }
-                }
-            }
 
-            mHandler.mouseClicked = false;
+        for (ScreenComponent comp : screenComps) {
+            if ((comp instanceof Button) && !(((Button) comp).MOUSE_REGISTERED)) {
+                this.addMouseListener((Button) comp);
+                ((Button) comp).REGISTER();
+            }
         }
 
-        if (kHandler.ePressed) {
+        if (kHandler.ePressed && selectedObject != null) {
             activeCoordinates = new Vector2(mHandler.mousePosition);
             kHandler.ePressed = false;
 
-            float randomAngle = (float) Math.round(Math.random()*90);
+            try {
+                PhysicsObject newObject = (PhysicsObject) selectedObject.getClass().getMethod("createNewDefault", Vector2.class).invoke(null, activeCoordinates);
 
-            objectList.add(
-//                new AABB(new Vector2(activeCoordinates), (float) Math.random() * 100, (float) Math.random() * 100)
-                new Box2D(
-                        new Vector2(activeCoordinates),
-                        new Vector2((float) Math.random() * 100, (float) Math.random() * 100),
-                        randomAngle
-                )
-            );
+                objectList.add(
+                        newObject
+                );
+
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -142,11 +142,26 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.WHITE);
+        g2.setFont(Font.getFont("Comic Sans MS"));
 
         for (PhysicsObject object : objectList) {
-            if ((object instanceof AABB) || (object instanceof Box2D && object.getRigidbody().getRotation() == 0.0f)) {
+            if (
+                // IS AN AAB             OR        NON-ROTATED BOX2D
+                (object instanceof AABB) || (object instanceof Box2D && object.getRigidbody().getRotation() == 0.0f)
+            ) {
+
                 g2.fillRect((int) object.getRigidbody().getPosition().x, (int) object.getRigidbody().getPosition().y, (int) object.getSize().x, (int) object.getSize().y);
+
+            // CIRCLE
+            } else if (object instanceof Circle) {
+
+                int diameter = (int) (((Circle) object).getRadius() * 2);
+                Vector2 position = object.getRigidbody().getPosition();
+                g2.fillOval((int) position.x, (int) position.y, diameter, diameter);
+
+            // ROTATED BOX2D
             } else if (object instanceof Box2D) {
+
                 Vector2[] vertices = ((Box2D) object).getVertices();
                 int numberOfVertices = vertices.length;
 
@@ -169,7 +184,15 @@ public class GamePanel extends JPanel implements Runnable {
         for (ScreenComponent component : screenComps) {
             g2.setColor(component.color);
             Vector2 size = component.getSize();
-            g2.fillRect((int) component.min.x, (int) component.max.y, (int) size.x, (int) size.y);
+            g2.fillRect((int) component.min.x, (int) component.min.y, (int) size.x, (int) size.y);
+
+            g2.setColor(Color.BLACK);
+            if (component instanceof Button) {
+                FontMetrics fm = g2.getFontMetrics(g.getFont());
+                int yOffset = fm.getAscent();
+                g.drawString(((Button) component).text, (int) component.min.x, (int) component.min.y+yOffset);
+            }
+
         }
 
         g2.dispose();

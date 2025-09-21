@@ -4,22 +4,11 @@ import physics2d.fundamentals.Vector2;
 
 public class TITMath {
 
-//    public static void rotate(Vector2 vec, float angleDeg, Vector2 origin) {
-//        float x = vec.x - origin.x;
-//        float y = vec.y - origin.y;
-//
-//        float cos = (float) Math.cos(Math.toRadians(angleDeg));
-//        float sin = (float) Math.cos(Math.toRadians(angleDeg));
-//
-//        float xPrime = (x * cos) - (y * sin);
-//        float yPrime = (x * sin) + (y * cos);
-//
-//        xPrime += origin.x;
-//        yPrime += origin.y;
-//
-//        vec.x = xPrime;
-//        vec.y = yPrime;
-//    }
+    public static Vector2 getCenter(Vector2 topLeft, Vector2 size) {
+        return new Vector2((topLeft.x - (size.x/2)), (topLeft.y - (size.y / 2)));
+    }
+
+    // ROTATION
 
     public static void rotate(Vector2 vec, float angleDeg, Vector2 origin) {
         float cos = (float) Math.cos(Math.toRadians(angleDeg));
@@ -31,6 +20,8 @@ public class TITMath {
         vec.x = newX;
         vec.y = newY;
     }
+
+    // COMPARISONS
 
     public static boolean compare(float x, float y, float epsilon) {
         return Math.abs(x - y) < epsilon * Math.max(1.0f, Math.max(Math.abs(x), Math.abs(y)));

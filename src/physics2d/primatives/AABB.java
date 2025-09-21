@@ -1,6 +1,5 @@
 package physics2d.primatives;
 
-import com.beust.jcommander.internal.Nullable;
 import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.rigidbody.Rigidbody2D;
@@ -9,6 +8,10 @@ import physics2d.rigidbody.Rigidbody2D;
 public class AABB extends PhysicsObject {
     private Vector2 size = new Vector2();
     private Vector2 halfSize = new Vector2();
+
+    public static AABB createNewDefault(Vector2 center) {
+        return new AABB(center, 20, 20);
+    }
 
     public AABB(Vector2 inputSize) {
         this.size = new Vector2(inputSize);
