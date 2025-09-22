@@ -5,8 +5,6 @@ public class Vector2 {
     public float x;
     public float y;
 
-//    public float hypotenuse;
-
     //**************//
     // CONSTRUCTORS //
     //**************//
@@ -14,18 +12,28 @@ public class Vector2 {
     public Vector2(float inst_x, float inst_y) {
         x = inst_x;
         y = inst_y;
-        /*hypotenuse = calculate_hypotenuse();*/
     }
 
     public Vector2(Vector2 vector) {
         x = vector.x;
         y = vector.y;
-        /*hypotenuse = calculate_hypotenuse();*/
     }
 
-    public Vector2(float size) {x = size; y = size; /*hypotenuse = calculate_hypotenuse();*/}
+    public Vector2(float size) {x = size; y = size;}
 
-    public Vector2() {x=0f; y=0f; /*hypotenuse=0f;*/}
+    public Vector2() {x=0f; y=0f;}
+
+    // SETTING
+
+    public void set(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void set(Vector2 newVec) {
+        this.x = newVec.x;
+        this.y = newVec.y;
+    }
 
     //*********//
     // METHODS //
