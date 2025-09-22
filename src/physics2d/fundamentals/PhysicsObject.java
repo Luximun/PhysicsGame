@@ -1,7 +1,5 @@
 package physics2d.fundamentals;
 
-import physics2d.primatives.AABB;
-import physics2d.primatives.Circle;
 import physics2d.rigidbody.Rigidbody2D;
 
 import java.awt.*;

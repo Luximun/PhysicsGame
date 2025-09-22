@@ -3,7 +3,6 @@ package main;
 import main.components.Button;
 import main.components.ObjectSelectionButton;
 import main.components.ScreenComponent;
-import main.utils.TITMath;
 import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.primatives.AABB;
@@ -12,7 +11,6 @@ import physics2d.primatives.Circle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.Console;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -149,7 +147,7 @@ public class GamePanel extends JPanel implements Runnable {
                 object.render(g2);
             } catch (NoSuchMethodError e) {
                 System.err.println("Object {" + object + "} is unrenderable - deleting. See below for exact error.");
-                System.err.println(e.toString());
+                System.err.println(e);
                 objectList.remove(object);
             }
         }

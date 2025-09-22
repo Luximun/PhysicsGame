@@ -3,7 +3,6 @@ package physics2d.primatives;
 import main.utils.TITMath;
 import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
-import physics2d.rigidbody.Rigidbody2D;
 
 import java.awt.*;
 
