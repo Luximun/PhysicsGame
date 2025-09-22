@@ -145,39 +145,12 @@ public class GamePanel extends JPanel implements Runnable {
         g2.setFont(Font.getFont("Comic Sans MS"));
 
         for (PhysicsObject object : objectList) {
-            if (
-                // IS AN AAB             OR        NON-ROTATED BOX2D
-                (object instanceof AABB) || (object instanceof Box2D && object.getRigidbody().getRotation() == 0.0f)
-            ) {
-
-                g2.fillRect((int) object.getRigidbody().getPosition().x, (int) object.getRigidbody().getPosition().y, (int) object.getSize().x, (int) object.getSize().y);
-
-            // CIRCLE
-            } else if (object instanceof Circle) {
-
-                int diameter = (int) (((Circle) object).getRadius() * 2);
-                Vector2 position = object.getRigidbody().getPosition();
-                g2.fillOval((int) position.x, (int) position.y, diameter, diameter);
-
-            // ROTATED BOX2D
-            } else if (object instanceof Box2D) {
-
-                Vector2[] vertices = ((Box2D) object).getVertices();
-                int numberOfVertices = vertices.length;
-
-                int[] xPositions = new int[numberOfVertices];
-                int[] yPositions = new int[numberOfVertices];
-
-                int index = 0;
-
-                for (Vector2 vertex : vertices) {
-                    xPositions[index] = (int) vertex.x;
-                    yPositions[index] = (int) vertex.y;
-
-                    index++;
-                }
-
-                g2.fillPolygon(xPositions, yPositions, numberOfVertices);
+            try {
+                object.render(g2);
+            } catch (NoSuchMethodError e) {
+                System.err.println("Object {" + object + "} is unrenderable - deleting. See below for exact error.");
+                System.err.println(e.toString());
+                objectList.remove(object);
             }
         }
 

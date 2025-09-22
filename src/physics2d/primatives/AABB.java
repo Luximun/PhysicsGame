@@ -4,6 +4,8 @@ import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.rigidbody.Rigidbody2D;
 
+import java.awt.*;
+
 // Axis-aligned Bounding Box
 public class AABB extends PhysicsObject {
     private Vector2 size = new Vector2();
@@ -45,5 +47,10 @@ public class AABB extends PhysicsObject {
     @Override
     public Vector2 getSize() {
         return this.size;
+    }
+
+    @Override
+    public void render(Graphics2D g2D) {
+        g2D.fillRect((int) this.getRigidbody().getPosition().x, (int) this.getRigidbody().getPosition().y, (int) this.getSize().x, (int) this.getSize().y);
     }
 }

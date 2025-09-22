@@ -5,6 +5,8 @@ import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.rigidbody.Rigidbody2D;
 
+import java.awt.*;
+
 public class Box2D extends PhysicsObject {
     private Vector2 size = new Vector2();
     private Vector2 halfSize = new Vector2();
@@ -58,5 +60,29 @@ public class Box2D extends PhysicsObject {
     @Override
     public Vector2 getSize() {
         return this.size;
+    }
+
+    @Override
+    public void render(Graphics2D g2D) {
+        if (this.getRigidbody().getRotation() == 0.0f) {
+            g2D.fillRect((int) this.getRigidbody().getPosition().x, (int) this.getRigidbody().getPosition().y, (int) this.getSize().x, (int) this.getSize().y);
+        } else {
+            Vector2[] vertices = this.getVertices();
+            int numberOfVertices = vertices.length;
+
+            int[] xPositions = new int[numberOfVertices];
+            int[] yPositions = new int[numberOfVertices];
+
+            int index = 0;
+
+            for (Vector2 vertex : vertices) {
+                xPositions[index] = (int) vertex.x;
+                yPositions[index] = (int) vertex.y;
+
+                index++;
+            }
+
+            g2D.fillPolygon(xPositions, yPositions, numberOfVertices);
+        }
     }
 }

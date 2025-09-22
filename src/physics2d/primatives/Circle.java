@@ -4,6 +4,8 @@ import physics2d.fundamentals.PhysicsObject;
 import physics2d.fundamentals.Vector2;
 import physics2d.rigidbody.Rigidbody2D;
 
+import java.awt.*;
+
 public class Circle extends PhysicsObject {
     private float radius = 1.0f;
 
@@ -30,5 +32,12 @@ public class Circle extends PhysicsObject {
     @Override
     public Vector2 getSize() {
         return null;
+    }
+
+    @Override
+    public void render(Graphics2D g2D) {
+        int diameter = (int) this.getRadius() * 2;
+        Vector2 position = this.getRigidbody().getPosition();
+        g2D.fillOval((int) position.x, (int) position.y, diameter, diameter);
     }
 }

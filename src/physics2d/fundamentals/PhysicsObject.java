@@ -4,6 +4,8 @@ import physics2d.primatives.AABB;
 import physics2d.primatives.Circle;
 import physics2d.rigidbody.Rigidbody2D;
 
+import java.awt.*;
+
 public abstract class PhysicsObject {
 
     protected Rigidbody2D rigidbody = new Rigidbody2D();
@@ -14,4 +16,5 @@ public abstract class PhysicsObject {
         return rigidbody;
     }
     public abstract Vector2 getSize();
+    public abstract void render(Graphics2D g2D);
 }
