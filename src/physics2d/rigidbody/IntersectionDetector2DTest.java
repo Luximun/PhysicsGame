@@ -3,9 +3,7 @@ package physics2d.rigidbody;
 import org.junit.Test;
 import physics2d.fundamentals.Line2D;
 import physics2d.fundamentals.Vector2;
-import physics2d.primatives.AABB;
-import physics2d.primatives.Box2D;
-import physics2d.primatives.Circle;
+import physics2d.primatives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,5 +96,19 @@ public class IntersectionDetector2DTest {
 
         assertTrue( IntersectionDetector2D.lineAndAABB(line, aabb) );
     }
+
+    @Test
+    public void raycastToCircleShouldReturnTrue() {
+        Ray2D ray = new Ray2D(new Vector2(0, 0), new Vector2(1, 1));
+        Circle circle = new Circle(new Vector2(2, 1), 1.5f);
+        RaycastResult res = new RaycastResult();
+
+        boolean boolResult = IntersectionDetector2D.raycast(circle, ray, res);
+        System.out.println(res.point.x + " " + res.point.y);
+
+        assertTrue( boolResult );
+    }
+
+
 
 }

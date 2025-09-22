@@ -35,6 +35,26 @@ public class Vector2 {
         this.y = newVec.y;
     }
 
+    public void setComponent(int component, float value) {
+        if (component == 0) {
+            this.x = value;
+        } else if (component == 1) {
+            this.y = value;
+        }
+    }
+
+    // GETTING
+
+    public final float get(int t)
+    {
+        if (t == 0) {
+            return this.x;
+        } else if (t == 1) {
+            return this.y;
+        }
+        return -1;
+    }
+
     //*********//
     // METHODS //
     //*********//

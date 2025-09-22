@@ -61,6 +61,10 @@ public class Box2D extends PhysicsObject {
         return this.size;
     }
 
+    public Vector2 getHalfSize() {
+        return this.halfSize;
+    }
+
     @Override
     public void render(Graphics2D g2D) {
         if (this.getRigidbody().getRotation() == 0.0f) {

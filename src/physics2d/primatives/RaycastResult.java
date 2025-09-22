@@ -4,10 +4,10 @@ import physics2d.fundamentals.Vector2;
 
 public class RaycastResult {
 
-    private Vector2 point;
-    private Vector2 normal;
-    private float t;
-    private boolean hit;
+    public Vector2 point;
+    public Vector2 normal;
+    public float t;
+    public boolean hit;
 
     public RaycastResult() {
         this.point = new Vector2();

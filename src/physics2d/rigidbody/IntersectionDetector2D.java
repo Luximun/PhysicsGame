@@ -155,8 +155,102 @@ public class IntersectionDetector2D {
         }
 
         if (result != null) {
-            Vector2 point = new Vector2(ray.getOrigin()).add(ray.getDirection().multiplyBy(t));
+            Vector2 point = new Vector2(ray.getOrigin()).add( new Vector2( ray.getDirection() ).multiplyBy(t) );
             Vector2 normal = new Vector2(point).subtract(circle.getCenter());
+            normal.normalize();
+
+            result.init(point, normal, t, true);
+        }
+
+        return true;
+    }
+
+    public static boolean raycast(AABB box, Ray2D ray, RaycastResult result) {
+        RaycastResult.reset(result);
+
+        // Normalising and unit vectoring
+        Vector2 unitVector = ray.getDirection();
+        unitVector.normalize();
+        unitVector.x = (unitVector.x != 0) ? 1.0f/unitVector.x : 0f;
+        unitVector.y = (unitVector.y != 0) ? 1.0f/unitVector.y : 0f;
+
+        Vector2 min = box.getMin();
+        min = min.subtract(ray.getOrigin()).multiplyBy(unitVector);
+        Vector2 max = box.getMax();
+        max = max.subtract(ray.getOrigin()).multiplyBy(unitVector);
+
+        float tMin = Math.max(Math.min(min.x, max.x), Math.min(min.y, max.y));
+        float tMax = Math.min(Math.max(min.x, max.x), Math.max(min.y, max.y));
+        if (tMax < 0 || tMin > tMax) {
+            return false;
+        }
+
+        float t = (tMin < 0f) ? tMax : tMin;
+        boolean hit = t > 0f;// && t * t < ray.getMaximum();
+        if (!hit) {
+            return false;
+        }
+
+        if (result != null) {
+            Vector2 point = new Vector2(ray.getOrigin()).add( new Vector2(ray.getDirection().multiplyBy(t) ));
+            Vector2 normal = new Vector2(ray.getOrigin()).subtract(point);
+            normal.normalize();
+
+            result.init(point, normal, t, true);
+        }
+
+        return true;
+    }
+
+    public static boolean raycast(Box2D box, Ray2D ray, RaycastResult result) {
+        RaycastResult.reset(result);
+
+        Vector2 size = box.getHalfSize();
+        Vector2 xAxis = new Vector2(1, 0);
+        Vector2 yAxis = new Vector2(0, 1);
+        TITMath.rotate(xAxis, box.getRigidbody().getRotation(), new Vector2(0,0));
+        TITMath.rotate(yAxis, box.getRigidbody().getRotation(), new Vector2(0, 0));
+
+        Vector2 p = new Vector2(box.getRigidbody().getPosition()).subtract(ray.getOrigin());
+
+        // prohect direction of ray onto each box axis
+        Vector2 f = new Vector2(
+                xAxis.dot(ray.getDirection()),
+                yAxis.dot(ray.getDirection())
+        );
+
+        // project p onto every axis of box
+        Vector2 e = new Vector2(
+            xAxis.dot(p),
+            yAxis.dot(p)
+        );
+
+        float[] tArr = {0, 0, 0, 0};
+        for (int i=0; i < 2; i++) {
+            if (TITMath.compare(f.get(i), 0)) {
+                // if ray is parallel to curent axis and origin of ray is not inside we have no hit
+                if (-e.get(i) - size.get(i) > 0 || -e.get(i) + size.get(i) < 0) {
+                    return false;
+                }
+
+                f.setComponent(i, 0.00001f); // avoiding div by 0
+            }
+            tArr[i*2 + 0] = (e.get(i) + size.get(i)) / f.get(i); //tmax for this axis
+            tArr[i*2 + 1] = (e.get(i) - size.get(i)) / f.get(i); //tmin for this axis
+        }
+
+        float tMin = Math.max(Math.min(tArr[0], tArr[1]), Math.min(tArr[2], tArr[3]));
+        float tMax = Math.min(Math.max(tArr[0], tArr[1]), Math.max(tArr[2], tArr[3]));
+
+        float t = (tMin < 0f) ? tMax : tMin;
+        boolean hit = t > 0f;// && t * t < ray.getMaximum();
+        if (!hit) {
+            return false;
+        }
+
+        if (result != null) {
+            Vector2 point = new Vector2(ray.getOrigin()).add( new Vector2(ray.getDirection().multiplyBy(t) ));
+            Vector2 normal = new Vector2(ray.getOrigin()).subtract(point);
             normal.normalize();
 
             result.init(point, normal, t, true);
