@@ -109,12 +109,19 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
+    /// TICK FUNCTION
     public void update() {
 
+        // register buttons to allow for click detection
         for (ScreenComponent comp : screenComps) {
-            if ((comp instanceof Button) && !(((Button) comp).MOUSE_REGISTERED)) {
+            if (
+                    (comp instanceof Button) &&
+                    !( ((Button) comp).checkRegistration() )
+            ) {
+
                 this.addMouseListener((Button) comp);
                 ((Button) comp).REGISTER();
+
             }
         }
 
@@ -135,6 +142,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /// PAINT FUNCTION
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -145,13 +153,14 @@ public class GamePanel extends JPanel implements Runnable {
         for (PhysicsObject object : objectList) {
             try {
                 object.render(g2);
-            } catch (NoSuchMethodError e) {
+            } catch (NoSuchMethodError | AbstractMethodError e) {
                 System.err.println("Object {" + object + "} is unrenderable - deleting. See below for exact error.");
                 System.err.println(e);
                 objectList.remove(object);
             }
         }
 
+        // RENDER SCREEN COMPONENTS (BUTTONS, ETC)
         for (ScreenComponent component : screenComps) {
             g2.setColor(component.color);
             Vector2 size = component.getSize();
@@ -159,9 +168,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             g2.setColor(Color.BLACK);
             if (component instanceof Button) {
-                FontMetrics fm = g2.getFontMetrics(g.getFont());
+                FontMetrics fm = g2.getFontMetrics(g2.getFont());
                 int yOffset = fm.getAscent();
-                g.drawString(((Button) component).text, (int) component.min.x, (int) component.min.y+yOffset);
+                g2.drawString(((Button) component).text, (int) component.min.x, (int) component.min.y+yOffset);
             }
 
         }
